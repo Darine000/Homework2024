@@ -1,4 +1,3 @@
-// SearchController.js
 
 exports.search = (req, res) => {
     const query = req.query.q;
