@@ -2,7 +2,6 @@ const fs = require('fs');
 
 const homeworkFilePath = './data/homework.json';
 
-// Получить все домашние задания для определенного курса
 function getHomeworkByCourseId(req, res) {
   const courseId = parseInt(req.params.courseId);
   const homework = readFromFile(homeworkFilePath);
@@ -10,7 +9,6 @@ function getHomeworkByCourseId(req, res) {
   res.json(assignments);
 }
 
-// Создать новое домашнее задание
 function createHomework(req, res) {
   const newAssignment = req.body;
   let homework = readFromFile(homeworkFilePath);
@@ -21,7 +19,6 @@ function createHomework(req, res) {
   res.status(201).json(newAssignment);
 }
 
-// Вспомогательные функции для работы с файлами JSON
 function readFromFile(filePath) {
   const data = fs.readFileSync(filePath, 'utf8');
   return JSON.parse(data);

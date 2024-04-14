@@ -1,17 +1,10 @@
-// NewsletterController.js
-// Отправка рассылки
 exports.sendNewsletter = (req, res) => {
     const { email, message } = req.body;
-
-    // Здесь можно добавить логику отправки рассылки
-    // Например, с использованием nodemailer
-
-    // Пример отправки электронной почты с использованием nodemailer
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'your-email@gmail.com', // Ваш email
-            pass: 'your-password' // Ваш пароль
+            user: 'your-email@gmail.com', 
+            pass: 'your-password' 
         }
     });
 
