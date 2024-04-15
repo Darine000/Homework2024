@@ -10,6 +10,13 @@ const app = express();
 
 app.use(bodyParser.json());
 
+const homeworkRecordController = require('./controllers/homeworkRecordController');
+app.get('/api/homework-records', homeworkRecordController.getAllHomeworkRecords);
+app.get('/api/homework-records/:id', homeworkRecordController.getHomeworkRecordById);
+app.post('/api/homework-records', homeworkRecordController.createHomeworkRecord);
+app.put('/api/homework-records/:id', homeworkRecordController.updateHomeworkRecord);
+app.delete('/api/homework-records/:id', homeworkRecordController.deleteHomeworkRecord);
+
 app.get('/users', userController.getAllUsers);
 app.post('/users', userController.createUser);
 app.put('/users/:userId', userController.updateUser);
