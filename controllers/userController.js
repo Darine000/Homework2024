@@ -27,7 +27,7 @@ function updateUser(req, res) {
     saveToFile(usersFilePath, users);
     res.status(200).json(users[index]);
   } else {
-    res.status(404).send('Пользователь не найден');
+    res.status(404).send('Uživatel nebyl nalezen');
   }
 }
 
@@ -37,9 +37,9 @@ function deleteUser(req, res) {
   const filteredUsers = users.filter(user => user.id !== userId);
   if (filteredUsers.length < users.length) {
     saveToFile(usersFilePath, filteredUsers);
-    res.status(200).send('Пользователь удален');
+    res.status(200).send('Odstraněný uživatel');
   } else {
-    res.status(404).send('Пользователь не найден');
+    res.status(404).send('Uživatel nebyl nalezen');
   }
 }
 

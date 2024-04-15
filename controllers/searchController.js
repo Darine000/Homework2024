@@ -1,9 +1,9 @@
 exports.search = (req, res) => {
     const query = req.query.q;
     const data = [
-        { id: 1, title: 'Результат 1' },
-        { id: 2, title: 'Результат 2' },
-        { id: 3, title: 'Результат 3' }
+        { id: 1, title: 'Výsledek 1' },
+        { id: 2, title: 'Výsledek 2' },
+        { id: 3, title: 'Výsledek 3' }
     ];
 
     const results = data.filter(item =>

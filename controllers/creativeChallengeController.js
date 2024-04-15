@@ -7,7 +7,7 @@ exports.getAllCreativeChallenges = (req, res) => {
     fs.readFile(challengesFilePath, 'utf8', (err, data) => {
         if (err) {
             console.error(err);
-            res.status(500).send('Ошибка чтения данных');
+            res.status(500).send('Chyba záznamu dat');
             return;
         }
         const challenges = JSON.parse(data);
@@ -20,13 +20,13 @@ exports.getCreativeChallengeById = (req, res) => {
     fs.readFile(challengesFilePath, 'utf8', (err, data) => {
         if (err) {
             console.error(err);
-            res.status(500).send('Ошибка чтения данных');
+            res.status(500).send('Chyba při čtení dat');
             return;
         }
         const challenges = JSON.parse(data);
         const challenge = challenges.find(ch => ch.id === challengeId);
         if (!challenge) {
-            res.status(404).send('Creative Challenge не найден');
+            res.status(404).send('Creative Challenge nebyla nalezena');
         } else {
             res.json(challenge);
         }
@@ -40,7 +40,7 @@ exports.createCreativeChallenge = (req, res) => {
     fs.readFile(challengesFilePath, 'utf8', (err, data) => {
         if (err) {
             console.error(err);
-            res.status(500).send('Ошибка чтения данных');
+            res.status(500).send('Chyba při čtení dat');
             return;
         }
         const challenges = JSON.parse(data);
@@ -50,7 +50,7 @@ exports.createCreativeChallenge = (req, res) => {
         fs.writeFile(challengesFilePath, JSON.stringify(challenges, null, 2), 'utf8', err => {
             if (err) {
                 console.error(err);
-                res.status(500).send('Ошибка записи данных');
+                res.status(500).send('Chyba záznamu dat');
                 return;
             }
             res.status(201).json(newChallenge);
@@ -64,7 +64,7 @@ exports.updateCreativeChallenge = (req, res) => {
     fs.readFile(challengesFilePath, 'utf8', (err, data) => {
         if (err) {
             console.error(err);
-            res.status(500).send('Ошибка чтения данных');
+            res.status(500).send('Chyba záznamu dat');
             return;
         }
         let challenges = JSON.parse(data);
@@ -78,10 +78,10 @@ exports.updateCreativeChallenge = (req, res) => {
         fs.writeFile(challengesFilePath, JSON.stringify(challenges, null, 2), 'utf8', err => {
             if (err) {
                 console.error(err);
-                res.status(500).send('Ошибка записи данных');
+                res.status(500).send('Chyba záznamu dat');
                 return;
             }
-            res.send('Creative Challenge успешно обновлен');
+            res.send('Creative Challenge úspěšně aktualizován');
         });
     });
 };
@@ -91,7 +91,7 @@ exports.deleteCreativeChallenge = (req, res) => {
     fs.readFile(challengesFilePath, 'utf8', (err, data) => {
         if (err) {
             console.error(err);
-            res.status(500).send('Ошибка чтения данных');
+            res.status(500).send('Chyba při čtení dat');
             return;
         }
         let challenges = JSON.parse(data);
@@ -100,10 +100,10 @@ exports.deleteCreativeChallenge = (req, res) => {
         fs.writeFile(challengesFilePath, JSON.stringify(challenges, null, 2), 'utf8', err => {
             if (err) {
                 console.error(err);
-                res.status(500).send('Ошибка записи данных');
+                res.status(500).send('Chyba záznamu dat');
                 return;
             }
-            res.send('Creative Challenge успешно удален');
+            res.send('Creative Challenge úspěšně odstraněny');
         });
     });
 };

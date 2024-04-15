@@ -18,10 +18,10 @@ exports.sendNewsletter = (req, res) => {
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
             console.error(error);
-            res.status(500).send('Ошибка отправки письма');
+            res.status(500).send('Chyba při odesílání e-mailu');
         } else {
-            console.log('Email отправлен: ' + info.response);
-            res.send('Рассылка успешно отправлена');
+            console.log('Email odeslán: ' + info.response);
+            res.send('Zpravodaj byl úspěšně odeslán');
         }
     });
 };
