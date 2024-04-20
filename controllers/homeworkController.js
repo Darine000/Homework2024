@@ -1,35 +1,27 @@
-const fs = require('fs');
+const Homework = require('../models/homeworkModels');
 
-const homeworkFilePath = './data/homework.json';
+exports.getAllHomework = async (req, res) => {
+    try {
+        const homework = await Homework.find();
+        res.json(homework);
+    } catch (error) {
+        console.error('Error getting homework:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
 
-function getHomeworkByCourseId(req, res) {
-  const courseId = parseInt(req.params.courseId);
-  const homework = readFromFile(homeworkFilePath);
-  const assignments = homework.filter(assignment => assignment.courseId === courseId);
-  res.json(assignments);
-}
+exports.getHomeworkById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const homework = await Homework.findById(id);
+        if (!homework) {
+            return res.status(404).json({ message: 'Homework not found' });
+        }
+        res.json(homework);
+    } catch (error) {
+        console.error('Error getting homework by id:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
 
-function createHomework(req, res) {
-  const newAssignment = req.body;
-  let homework = readFromFile(homeworkFilePath);
-  const newAssignmentId = generateId(homework);
-  newAssignment.id = newAssignmentId;
-  homework.push(newAssignment);
-  saveToFile(homeworkFilePath, homework);
-  res.status(201).json(newAssignment);
-}
-
-function readFromFile(filePath) {
-  const data = fs.readFileSync(filePath, 'utf8');
-  return JSON.parse(data);
-}
-
-function saveToFile(filePath, data) {
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
-}
-
-function generateId(data) {
-  return data.length > 0 ? Math.max(...data.map(item => item.id)) + 1 : 1;
-}
-
-module.exports = { getHomeworkByCourseId, createHomework };
+// Другие методы контроллера для обработки запросов к ДЗ

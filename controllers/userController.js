@@ -1,59 +1,62 @@
-const fs = require('fs');
+// userController.js
 
-const usersFilePath = './data/users.json';
+// Пример данных пользователей (заглушка)
+let users = [
+  { id: 1, name: 'John', email: 'john@example.com' },
+  { id: 2, name: 'Alice', email: 'alice@example.com' },
+  { id: 3, name: 'Bob', email: 'bob@example.com' }
+];
 
-function getAllUsers(req, res) {
-  const users = readFromFile(usersFilePath);
+// Контроллер для получения всех пользователей
+const getAllUsers = (req, res) => {
   res.json(users);
-}
+};
 
-function createUser(req, res) {
-  const newUser = req.body;
-  let users = readFromFile(usersFilePath);
-  const newUserId = generateId(users);
-  newUser.id = newUserId;
+// Контроллер для создания нового пользователя
+const createUser = (req, res) => {
+  const { name, email } = req.body;
+  const id = users.length + 1;
+  const newUser = { id, name, email };
   users.push(newUser);
-  saveToFile(usersFilePath, users);
   res.status(201).json(newUser);
-}
+};
 
-function updateUser(req, res) {
-  const userId = parseInt(req.params.userId);
-  const updatedUserData = req.body;
-  let users = readFromFile(usersFilePath);
-  const index = users.findIndex(user => user.id === userId);
-  if (index !== -1) {
-    users[index] = {...users[index], ...updatedUserData };
-    saveToFile(usersFilePath, users);
-    res.status(200).json(users[index]);
+// Контроллер для получения пользователя по ID
+const getUserById = (req, res) => {
+  const userId = parseInt(req.params.id);
+  const user = users.find(user => user.id === userId);
+  if (user) {
+    res.json(user);
   } else {
-    res.status(404).send('Uživatel nebyl nalezen');
+    res.status(404).json({ message: 'User not found' });
   }
-}
+};
 
-function deleteUser(req, res) {
-  const userId = parseInt(req.params.userId);
-  let users = readFromFile(usersFilePath);
-  const filteredUsers = users.filter(user => user.id !== userId);
-  if (filteredUsers.length < users.length) {
-    saveToFile(usersFilePath, filteredUsers);
-    res.status(200).send('Odstraněný uživatel');
+// Контроллер для обновления пользователя по ID
+const updateUser = (req, res) => {
+  const userId = parseInt(req.params.id);
+  const { name, email } = req.body;
+  const user = users.find(user => user.id === userId);
+  if (user) {
+    user.name = name;
+    user.email = email;
+    res.json(user);
   } else {
-    res.status(404).send('Uživatel nebyl nalezen');
+    res.status(404).json({ message: 'User not found' });
   }
-}
+};
 
-function readFromFile(filePath) {
-  const data = fs.readFileSync(filePath, 'utf8');
-  return JSON.parse(data);
-}
+// Контроллер для удаления пользователя по ID
+const deleteUser = (req, res) => {
+  const userId = parseInt(req.params.id);
+  users = users.filter(user => user.id !== userId);
+  res.status(204).end();
+};
 
-function saveToFile(filePath, data) {
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
-}
-
-function generateId(data) {
-  return data.length > 0 ? Math.max(...data.map(item => item.id)) + 1 : 1;
-}
-
-module.exports = { getAllUsers, createUser, updateUser, deleteUser };
+module.exports = {
+  getAllUsers,
+  createUser,
+  getUserById,
+  updateUser,
+  deleteUser
+};

@@ -1,36 +1,13 @@
-const { getAllHomeworkRecords, getHomeworkRecordById, createHomeworkRecord, updateHomeworkRecord, deleteHomeworkRecord } = require('../services/HomeworkRecordService');
+const HomeworkRecord = require('../models/homeworkRecord');
 
-exports.getAllHomeworkRecords = (req, res) => {
-    const homeworkRecords = getAllHomeworkRecords();
-    res.json(homeworkRecords);
-};
-
-exports.getHomeworkRecordById = (req, res) => {
-    const recordId = req.params.id;
-    const record = getHomeworkRecordById(recordId);
-    if (!record) {
-        res.status(404).send('Záznam o domácím úkolu nebyl nalezen');
-    } else {
-        res.json(record);
+exports.getAllHomeworkRecords = async (req, res) => {
+    try {
+        const records = await HomeworkRecord.find();
+        res.json(records);
+    } catch (error) {
+        console.error('Error getting homework records:', error);
+        res.status(500).json({ message: 'Internal server error' });
     }
 };
 
-exports.createHomeworkRecord = (req, res) => {
-    const recordData = req.body;
-    const newRecord = createHomeworkRecord(recordData);
-    res.status(201).json(newRecord);
-};
-
-// Обновление записи домашнего задания
-exports.updateHomeworkRecord = (req, res) => {
-    const recordId = req.params.id;
-    const updatedRecordData = req.body;
-    updateHomeworkRecord(recordId, updatedRecordData);
-    res.send('Záznam o domácím úkolu byl úspěšně aktualizován');
-};
-
-exports.deleteHomeworkRecord = (req, res) => {
-    const recordId = req.params.id;
-    deleteHomeworkRecord(recordId);
-    res.send('Záznam o domácím úkolu byl úspěšně odstraněn');
-};
+// Другие методы контроллера для работы с записями о выполнении ДЗ

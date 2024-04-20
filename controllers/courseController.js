@@ -1,34 +1,29 @@
-const fs = require('fs');
+const Course = require('../models/courseModel');
 
-const coursesFilePath = './data/courses.json';
+const updateCourse = async (req, res) => {
+    const courseId = req.params.id;
+    const newData = req.body;
 
-function getAllCourses(req, res) {
-  const courses = readFromFile(coursesFilePath);
-  res.json(courses);
-}
+    try {
+        const course = await Course.findById(courseId);
 
-function createCourse(req, res) {
-  const newCourse = req.body;
-  let courses = readFromFile(coursesFilePath);
-  const newCourseId = generateId(courses);
-  newCourse.id = newCourseId;
-  courses.push(newCourse);
-  saveToFile(coursesFilePath, courses);
-  res.status(201).json(newCourse);
-}
+        if (!course) {
+            return res.status(404).json({ message: 'Курс не найден' });
+        }
 
-function readFromFile(filePath) {
-  const data = fs.readFileSync(filePath, 'utf8');
-  return JSON.parse(data);
-}
+        course.title = newData.title || course.title;
+        course.description = newData.description || course.description;
+        course.startDate = newData.startDate || course.startDate;
+        course.endDate = newData.endDate || course.endDate;
 
-function saveToFile(filePath, data) {
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
-}
+        await course.save();
 
+        res.status(200).json(course);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 
-function generateId(data) {
-  return data.length > 0 ? Math.max(...data.map(item => item.id)) + 1 : 1;
-}
-
-module.exports = { getAllCourses, createCourse };
+module.exports = {
+    updateCourse
+};

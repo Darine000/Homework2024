@@ -1,41 +1,43 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const userController = require('./controllers/userController');
-const courseController = require('./controllers/courseController');
-const homeworkController = require('./controllers/homeworkController');
-const creativeChallengeController = require('./controllers/creativeChallengeController');
-const newsletterController = require('./controllers/newsletterController');
+const courseRoutes = require('./routes/courseRoutes');
+const userRoutes = require('./routes/userRoutes');
+const homeworkRoutes = require('./routes/homeworkRoutes.js');
+const creativeChallengeRoutes = require('./routes/creativeChallengeRoutes');
+const newsletterRoutes = require('./routes/newsletterRoutes');
+const galleryRoutes = require('./routes/galleryRoutes');
 
 const app = express();
 
-app.use(bodyParser.json());
+// Подключение к базе данных MongoDB
+mongoose.connect('mongodb://localhost:27017/mydatabase', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
+    console.log('Connected to MongoDB');
+}).catch(err => console.error('Error connecting to MongoDB:', err));
 
-const homeworkRecordController = require('./controllers/homeworkRecordController');
-app.get('/api/homework-records', homeworkRecordController.getAllHomeworkRecords);
-app.get('/api/homework-records/:id', homeworkRecordController.getHomeworkRecordById);
-app.post('/api/homework-records', homeworkRecordController.createHomeworkRecord);
-app.put('/api/homework-records/:id', homeworkRecordController.updateHomeworkRecord);
-app.delete('/api/homework-records/:id', homeworkRecordController.deleteHomeworkRecord);
+// Middleware для обработки JSON
+app.use(express.json());
 
-app.get('/users', userController.getAllUsers);
-app.post('/users', userController.createUser);
-app.put('/users/:userId', userController.updateUser);
-app.delete('/users/:userId', userController.deleteUser);
+// Маршруты для курсов
+app.use('/api/courses', courseRoutes);
 
-app.get('/courses', courseController.getAllCourses);
+// Маршруты для пользователей
+app.use('/api/users', userRoutes);
 
-app.get('/homework/:courseId', homeworkController.getHomeworkByCourseId);
+// Маршруты для домашних заданий
+app.use('/api/homework', homeworkRoutes);
 
-app.get('/creative-challenges', creativeChallengeController.getAllCreativeChallenges);
-app.post('/creative-challenges', creativeChallengeController.createCreativeChallenge);
+// Маршруты для творческих вызовов
+app.use('/api/creative-challenges', creativeChallengeRoutes);
 
-app.post('/newsletter', newsletterController.sendNewsletter);
+// Маршруты для рассылки новостей
+app.use('/api/newsletter', newsletterRoutes);
+
+// Маршруты для галереи
+app.use('/api/gallery', galleryRoutes);
 
 const PORT = process.env.PORT || 4000;
-app.get('/', (req, res) => {
-    res.send('Hlavní port');
-});
-
 app.listen(PORT, () => {
-  console.log(`Server je spuštěn na portu ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
