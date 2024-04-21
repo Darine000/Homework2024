@@ -4,8 +4,8 @@ const galleryController = require('../controllers/galleryController');
 
 // Определение маршрутов для галереи
 router.get('/', galleryController.getAllImages);
-router.get('/:id', galleryController.getImageById);
+router.get('/:id', galleryController.getImageByName);
 router.post('/', galleryController.uploadImage);
-router.delete('/:id', galleryController.deleteImage);
+router.delete('/:id', galleryController.deleteImageByName);
 
 module.exports = router;

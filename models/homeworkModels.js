@@ -1,7 +1,7 @@
 class Homework {
-  constructor(id, courseId, title, description) {
+  constructor(id, homeworkId, title, description) {
     this.id = id;
-    this.courseId = courseId;
+    this.homeworkId = homeworkId;
     this.title = title;
     this.description = description;
   }

@@ -1,13 +1,8 @@
-// homeworkRecordModel.js
-
-// Подключение библиотеки для работы с файловой системой
 const fs = require('fs');
 const path = require('path');
 
-// Путь к папке, где будут храниться записи о выполненных домашних заданиях
 const homeworkRecordsFolderPath = path.join(__dirname, 'data', 'homeworkRecords');
 
-// Функция для чтения всех записей о выполненных домашних заданиях из файла
 function getAllHomeworkRecords() {
     try {
         const files = fs.readdirSync(homeworkRecordsFolderPath);
@@ -22,10 +17,9 @@ function getAllHomeworkRecords() {
     }
 }
 
-// Функция для создания новой записи о выполненном домашнем задании
 function createHomeworkRecord(homeworkRecord) {
     try {
-        const id = Math.random().toString(36).substr(2, 9); // Генерация случайного ID
+        const id = Math.random().toString(36).substring(2, 9); // Генерация случайного ID
         const filePath = path.join(homeworkRecordsFolderPath, `${id}.json`);
         fs.writeFileSync(filePath, JSON.stringify(homeworkRecord), 'utf8');
         return { id, ...homeworkRecord };
@@ -34,7 +28,6 @@ function createHomeworkRecord(homeworkRecord) {
     }
 }
 
-// Экспорт функций для использования в других модулях
 module.exports = {
     getAllHomeworkRecords,
     createHomeworkRecord

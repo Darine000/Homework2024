@@ -11,6 +11,7 @@ const handleError = (err, req, res, next) => {
 // Define routes
 router.get('/', ccController.getAllCC);
 router.post('/', ccController.createCC);
+router.delete('/', ccController.deleteCC);
 
 // Use error handling middleware
 router.use(handleError);
